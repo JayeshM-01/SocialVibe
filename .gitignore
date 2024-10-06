@@ -1,8 +1,1 @@
-# Node.js dependencies
-/social_vibe/node_modules/
-/backend/node_modules/
-
-
-# Environment variables
 .env
-
