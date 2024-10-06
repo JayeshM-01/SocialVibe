@@ -3,6 +3,10 @@ const Schema = mongoose.Schema;
 
 // Define a schema to store the email and image URL
 const UserImageSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+  },
   email: {
     type: String,
     required: true,
@@ -17,3 +21,6 @@ const UserImageSchema = new Schema({
 const UserImage = mongoose.model('UserImage', UserImageSchema);
 
 module.exports = UserImage;
+
+
+

@@ -48,7 +48,7 @@ const ImageGallery = () => {
       <div className='flex flex-col' style={{ display: 'flex', flexWrap: 'wrap' }}>
         {images.map((image) => (
           <div key={image._id} style={{ margin: '10px' }}>
-            <PostCard images={image.imageUrl}/>
+            <PostCard images={image.imageUrl} name={image.name}/>
           </div>
         ))}
       </div>

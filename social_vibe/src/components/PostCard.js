@@ -1,12 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export const PostCard = ({images,email}) => {
+export const PostCard = ({ images, name }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to track modal visibility
+
+  const handleImageClick = () => {
+    setIsModalOpen(true); // Open modal on image click
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false); // Close modal
+  };
+
   return (
     <div>
       <div className="container mx-auto px-20 ">
         <div>
           <div className="p-3 px-6 min-h-48 flex justify-center items-center border-black" style={{ cursor: 'auto' }}>
-            {/* <custom-card3> */}
             <div className="rounded-md shadow-md sm:w-96 bg-white text-coolGray-100">
               <div className="flex items-center justify-between p-3" style={{ cursor: 'auto' }}>
                 <div className="flex items-center space-x-2" style={{ cursor: 'auto' }}>
@@ -18,11 +27,8 @@ export const PostCard = ({images,email}) => {
                   />
                   <div className="-space-y-1" style={{ cursor: 'auto' }}>
                     <h2 className="text-sm font-semibold leading-none" style={{ cursor: 'auto' }}>
-                      External_
+                      {name}
                     </h2>
-                    <span className="inline-block text-xs leading-none text-coolGray-400" style={{ cursor: 'auto' }}>
-                      New York City
-                    </span>
                   </div>
                 </div>
                 <button title="Open options" type="button">
@@ -41,8 +47,8 @@ export const PostCard = ({images,email}) => {
               <img
                 src={images}
                 alt=""
-                className="object-cover object-center w-full h-72 bg-coolGray-500"
-                style={{ cursor: 'auto' }}
+                className="object-contain object-center w-full min-h-80 h-full bg-coolGray-500 cursor-pointer" // Changed to object-contain
+                onClick={handleImageClick} // Click handler
               />
               <div className="p-3" style={{ cursor: 'auto' }}>
                 <div className="flex items-center justify-between" style={{ cursor: 'auto' }}>
@@ -98,10 +104,29 @@ export const PostCard = ({images,email}) => {
                 </div>
               </div>
             </div>
-            {/* </custom-card3> */}
           </div>
         </div>
       </div>
+
+      {/* Modal for Image Popup */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+          <div className="relative">
+            <img
+              src={images}
+              alt=""
+              className="max-w-full max-h-full"
+              onClick={closeModal} // Close modal on image click
+            />
+            <button
+              onClick={closeModal}
+              className="absolute top-0 right-0 p-2 text-white bg-red-500 rounded-full"
+            >
+              &times; {/* Close button */}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

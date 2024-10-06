@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
 
 export const UploadComponent = () => {
-  const [file, setFile] = useState(null); // State to store the uploaded file
-  const [loading, setLoading] = useState(false); // State to track loading status
-  const { user } = useAuth0(); // Get user info from Auth0 (to get the email)
+  const [file, setFile] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { user } = useAuth0();
 
   const handleFileChange = (e) => {
-    setFile(e.target.files[0]); // Storing the selected file in state
+    setFile(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
@@ -18,17 +18,15 @@ export const UploadComponent = () => {
       alert('Please provide a file');
       return;
     }
-    
-    // Prepare form data
-    const formData = new FormData();
-    formData.append('file', file); // Add file to the form data
-    formData.append('email', user.email); // Add user's email from Auth0 profile
 
-    // Set loading to true when upload starts
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('email', user.email);
+    formData.append('name', user.name);
+
     setLoading(true);
 
     try {
-      // Send the form data using axios
       const response = await axios.post('http://localhost:3001/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
@@ -41,7 +39,6 @@ export const UploadComponent = () => {
       console.error('Error uploading file:', error);
       alert('Error uploading file');
     } finally {
-      // Reset loading state after upload completes (successful or failed)
       setLoading(false);
     }
   };
@@ -55,13 +52,14 @@ export const UploadComponent = () => {
             type="file" 
             onChange={handleFileChange} 
             required 
+            accept="image/*,video/*" // Allow both images and videos
           />
         </div>
         <button type="submit" disabled={loading}>
           {loading ? 'Uploading...' : 'Upload'}
         </button>
       </form>
-      {loading && <p>Loading...</p>} {/* Show loader text */}
+      {loading && <p>Loading...</p>}
     </div>
   );
 };

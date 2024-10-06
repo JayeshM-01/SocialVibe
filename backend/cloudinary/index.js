@@ -11,7 +11,7 @@ cloudinary.config({
 const storage = new CloudinaryStorage({
   cloudinary,
   folder: 'SocialVibe',
-  allowedFormats: ['jpeg', 'png', 'jpg'],
+  allowedFormats: ['jpeg', 'png', 'jpg' , 'mp4', 'avi', 'mov'],
 });
 
 module.exports = {

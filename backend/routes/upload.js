@@ -2,7 +2,20 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const { storage } = require('../cloudinary'); // Import cloudinary storage configuration
-const upload = multer({ storage }); // Use multer to upload files to Cloudinary
+const upload = multer({
+  storage,
+  limits: { fileSize: 10 * 1024 * 1024 }, // Set file size limit to 10 MB for both images and videos
+  // fileFilter: (req, file, cb) => {
+  //   // Allow only specific file types
+  //   const filetypes = /jpeg|jpg|png|mp4|avi/; // Add your video formats
+  //   const mimetype = filetypes.test(file.mimetype);
+    
+  //   if (mimetype) {
+  //     return cb(null, true);
+  //   }
+  //   cb(new Error('File type not supported'));
+  // }
+});
 const mongoose = require('mongoose');
 
 // Import your MongoDB User model (adjust according to your schema)
@@ -14,17 +27,18 @@ router.post('/upload', upload.single('file'), async (req, res) => {
     console.log('Uploaded File:', req.file); // Log the entire file object
     console.log('Request Body:', req.body); // Log the body to see the email
 
-    const { email } = req.body; // Get the user's email from the form data
+    const { email,name } = req.body; // Get the user's email from the form data
     const imageUrl = req.file ? req.file.path : undefined; // Cloudinary image URL
     console.log('Image URL:', imageUrl); // Log the Cloudinary image URL
 
-    if (!email || !imageUrl) {
+    if (!email || !name || !imageUrl) {
       return res.status(400).json({ message: 'Email and image are required.' });
     }
 
     // Create a new document to store the email and image URL in MongoDB
     const newUserImage = new UserImage({
       email: email,
+      name: name,
       imageUrl: imageUrl,
     });
 
