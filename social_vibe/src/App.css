@@ -2,7 +2,8 @@
     background-image: url('./images/bg1.jpg'); 
     background-repeat: no-repeat; 
     background-size: cover; 
+    background-attachment: fixed; /* Keep the background fixed during scrolling */
     background-position: center; 
-    height: 100vh; 
+    min-height: 100vh; /* Change height to min-height */
     z-index: -1;
 }

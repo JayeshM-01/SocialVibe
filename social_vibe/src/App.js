@@ -2,13 +2,19 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Home } from './pages/Home';
+import UploadComponent from './pages/UploadComponent';
+import { Sidebar } from './components/Sidebar';
+import ImageGallery from './pages/ImageGallery';
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <Sidebar/>
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/upload" element={<UploadComponent />} />
+          <Route path="/reels" element={<ImageGallery />} />
         </Routes>
       </div>
     </Router>

@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const PostCard = () => {
+export const PostCard = ({images,email}) => {
   return (
     <div>
       <div className="container mx-auto px-20 ">
@@ -39,7 +39,7 @@ export const PostCard = () => {
                 </button>
               </div>
               <img
-                src="https://stackdiary.com/140x100.png"
+                src={images}
                 alt=""
                 className="object-cover object-center w-full h-72 bg-coolGray-500"
                 style={{ cursor: 'auto' }}

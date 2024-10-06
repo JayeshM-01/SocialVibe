@@ -17,7 +17,6 @@ export const Home = () => {
 
     return (
         <div>
-            <Sidebar/>
             <PostCard/>
         </div>
     );
