@@ -5,6 +5,7 @@ import { Home } from './pages/Home';
 import UploadComponent from './pages/UploadComponent';
 import { Sidebar } from './components/Sidebar';
 import ImageGallery from './pages/ImageGallery';
+import FriendsPage from './pages/FriendsPage';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/upload" element={<UploadComponent />} />
           <Route path="/reels" element={<ImageGallery />} />
+          <Route path="/friends" element={<FriendsPage />} />
         </Routes>
       </div>
     </Router>

@@ -4,7 +4,7 @@ const multer = require('multer');
 const { storage } = require('../cloudinary'); // Import cloudinary storage configuration
 const upload = multer({
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // Set file size limit to 10 MB for both images and videos
+  // limits: { fileSize: 10 * 1024 * 1024 }, // Set file size limit to 10 MB for both images and videos
   // fileFilter: (req, file, cb) => {
   //   // Allow only specific file types
   //   const filetypes = /jpeg|jpg|png|mp4|avi/; // Add your video formats
@@ -20,6 +20,7 @@ const mongoose = require('mongoose');
 
 // Import your MongoDB User model (adjust according to your schema)
 const UserImage = require('../Models/File');
+const Friends = require('../Models/Friends');
 
 // Route to handle image upload
 router.post('/upload', upload.single('file'), async (req, res) => {
@@ -53,16 +54,45 @@ router.post('/upload', upload.single('file'), async (req, res) => {
   }
 });
 
+// router.get('/images/:email', async (req, res) => {
+//   try {
+//     const { email } = req.params; // Get the email from the URL parameters
+//     const images = await UserImage.find({ email: email }); // Fetch images for that email
+
+//     if (!images || images.length === 0) {
+//       return res.status(404).json({ message: 'No images found for this email.' });
+//     }
+
+//     // Respond with the images
+//     res.status(200).json(images);
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: 'An error occurred while fetching images.' });
+//   }
+// });
+
 router.get('/images/:email', async (req, res) => {
   try {
     const { email } = req.params; // Get the email from the URL parameters
-    const images = await UserImage.find({ email: email }); // Fetch images for that email
 
-    if (!images || images.length === 0) {
-      return res.status(404).json({ message: 'No images found for this email.' });
+    // Step 1: Fetch the user's friends list from the Friends model
+    const userFriends = await Friends.findOne({ useremail: email });
+
+    if (!userFriends) {
+      return res.status(404).json({ message: 'User or friends not found.' });
     }
 
-    // Respond with the images
+    // Step 2: Get the user's email and their friends' emails
+    const emailsToFetch = [email, ...userFriends.friendsList]; // Combine user's email and their friends' emails
+
+    // Step 3: Fetch images for the user and their friends
+    const images = await UserImage.find({ email: { $in: emailsToFetch } });
+
+    if (!images || images.length === 0) {
+      return res.status(404).json({ message: 'No images found for this user or their friends.' });
+    }
+
+    // Step 4: Respond with the images
     res.status(200).json(images);
   } catch (error) {
     console.error(error);

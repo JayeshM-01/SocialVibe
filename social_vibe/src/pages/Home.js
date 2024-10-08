@@ -6,7 +6,6 @@ import axios from 'axios';
 
 export const Home = () => {
     const { user, isAuthenticated, isLoading } = useAuth0();
-    console.log(user);
     
     
     // Handle form submission
