@@ -29,8 +29,7 @@ const UserImageSchema = new Schema({
       required: true
     },
     date: {
-      type: Date,
-      default: Date.now
+      type: String
     },
     time: {
       type: String, // Optional: You could store time separately, or handle it in the frontend based on date

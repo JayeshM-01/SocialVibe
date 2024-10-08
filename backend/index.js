@@ -50,17 +50,21 @@ mongoose.connect(mongo_uri, {
     console.error('MongoDB connection error:', err);
 });
 
-io.on('connection', (socket) => {
-    console.log('A user connected');
+io.on("connection", (socket) => {
+  console.log(`User Connected: ${socket.id}`);
+
+  socket.on("join_room", (data) => {
+    socket.join(data);
     
-    // Handle new message event
-    socket.on('newMessage', async (data) => {
-        try {
-        //   console.log("hi");
-        const { senderName, senderEmail, imageUrl, imageId, ownerName, message } = data;
+    console.log(`User with ID: ${socket.id} joined room: ${data}`);
+  });
+
+  socket.on("send_message", async(data) => {
+    socket.to(data.room).emit("receive_message", data);
+    const { room, author, email, message, time, date } = data;
   
         // Find the image post by ID and update with new message
-        let post = await UserImage.findOne({ _id: imageId });
+        let post = await UserImage.findOne({ _id: room });
   
         if (!post) {
           return socket.emit('error', 'Post not found');
@@ -68,25 +72,61 @@ io.on('connection', (socket) => {
         
         // Add the new message to the messages array
         post.messages.push({
-          username: senderName,
-          useremail: senderEmail,
+          username: author,
+          useremail: email,
           message,
+          date,
+          time,
         });
   
         await post.save(); // Save the updated document
-  
-        // Emit back to all clients the updated messages
-        io.emit('messageSaved', post.messages);
-      } catch (err) {
-        console.error('Error saving message:', err);
-        socket.emit('error', 'Error saving message');
-      }
-    });
-  
-    socket.on('disconnect', () => {
-      console.log('A user disconnected');
-    });
   });
+
+  socket.on("disconnect", () => {
+    console.log("User Disconnected", socket.id);
+  });
+});
+
+
+
+
+// io.on('connection', (socket) => {
+//     console.log('A user connected');
+    
+//     // Handle new message event
+//     socket.on('newMessage', async (data) => {
+//         try {
+//         //   console.log("hi");
+//         const { senderName, senderEmail, imageUrl, imageId, ownerName, message } = data;
+  
+//         // Find the image post by ID and update with new message
+//         let post = await UserImage.findOne({ _id: imageId });
+  
+//         if (!post) {
+//           return socket.emit('error', 'Post not found');
+//         }
+        
+//         // Add the new message to the messages array
+//         post.messages.push({
+//           username: senderName,
+//           useremail: senderEmail,
+//           message,
+//         });
+  
+//         await post.save(); // Save the updated document
+  
+//         // Emit back to all clients the updated messages
+//         io.emit('messageSaved', post.messages);
+//       } catch (err) {
+//         console.error('Error saving message:', err);
+//         socket.emit('error', 'Error saving message');
+//       }
+//     });
+  
+//     socket.on('disconnect', () => {
+//       console.log('A user disconnected');
+//     });
+//   });
   
 
 

@@ -6,6 +6,7 @@ import UploadComponent from './pages/UploadComponent';
 import { Sidebar } from './components/Sidebar';
 import ImageGallery from './pages/ImageGallery';
 import FriendsPage from './pages/FriendsPage';
+import { SocketChat } from './pages/SocketChat';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/upload" element={<UploadComponent />} />
           <Route path="/reels" element={<ImageGallery />} />
           <Route path="/friends" element={<FriendsPage />} />
+          <Route path="/chat" element={<SocketChat />} />
         </Routes>
       </div>
     </Router>

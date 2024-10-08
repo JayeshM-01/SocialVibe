@@ -1,30 +1,14 @@
 import axios from 'axios';
 import React, { useState , useEffect} from 'react';
 import socketIOClient from 'socket.io-client';
+import { SocketChat } from '../pages/SocketChat';
 
 export const PostCard = ({ images, name, id, senderName, senderEmail }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // State for image modal
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false); // State for comment modal
   const [comments, setComments] = useState([]); // State to track comments
   const [newComment, setNewComment] = useState(''); // State for new comment input
-  const socket = socketIOClient('http://localhost:3001'); // Connect to the backend
-
-  useEffect(() => {
-    if (isCommentModalOpen) {
-      fetchComments();
-    }
-  }, [isCommentModalOpen]);
-
-  // Function to fetch comments for the image
-  const fetchComments = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/messages/${id}`);
-      setComments(response.data);
-    } catch (error) {
-      console.error('Error fetching comments:', error);
-    }
-  };
-
+  const socket = socketIOClient('http://localhost:3002'); // Connect to the backend
 
   // Handle opening the image modal
   const handleImageClick = () => {
@@ -159,51 +143,7 @@ const handleCommentSubmit = (e) => {
 
       {/* Modal for Comment Popup */}
       {isCommentModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-lg">
-            <h2 className="text-xl font-semibold mb-4">Comments</h2>
-            {/* List of comments */}
-          {/* List of comments */}
-          <div className="space-y-3 max-h-64 overflow-y-auto">
-            {comments.length > 0 ? (
-              comments.map((comment, index) => (
-                <div key={index} className="border-b pb-2">
-                  <p><strong>{comment.username}</strong> ({comment.useremail})</p>
-                  <p>{comment.message}</p>
-                  <small>{new Date(comment.date).toLocaleString()}</small> {/* Convert date to a readable format */}
-                </div>
-              ))
-            ) : (
-              <p>No comments yet. Be the first to comment!</p>
-            )}
-          </div>
-
-            {/* Comment Input Form */}
-            <form onSubmit={handleCommentSubmit} className="mt-4">
-              <input
-                type="text"
-                value={newComment}
-                onChange={(e) => setNewComment(e.target.value)}
-                placeholder="Write a comment..."
-                className="w-full border p-2 rounded-md"
-              />
-              <button
-                type="submit"
-                className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-              >
-                Submit
-              </button>
-            </form>
-
-            {/* Close button */}
-            <button
-              onClick={closeCommentModal}
-              className="mt-4 text-red-500 font-bold"
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <SocketChat id={id} name={senderName} email={senderEmail}/>
       )}
     </div>
   );
