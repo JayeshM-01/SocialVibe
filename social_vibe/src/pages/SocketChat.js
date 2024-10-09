@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import io from "socket.io-client";
 import { useState } from "react";
 import './schat.css';
@@ -6,14 +6,10 @@ import Chat from './Chat';
 
 const socket = io.connect("http://localhost:3001");
 
-
-export const SocketChat = ({id,name,email}) => {
+export const SocketChat = ({ id, name, email, closeCommentModal }) => {
   const [username, setUsername] = useState(name);
   const [room, setRoom] = useState(id);
-  const [showChat, setShowChat] = useState(true);
-
-  console.log(id);
-  
+  const chatRef = useRef(null); // Ref to the chat container
 
   const joinRoom = () => {
     if (username !== "" && room !== "") {
@@ -21,36 +17,37 @@ export const SocketChat = ({id,name,email}) => {
     }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     joinRoom();
-  },[])
 
-return (
-  <div className='chatbg'>
-      <div className="App">
-    {!showChat ? (
-      <div className="joinChatContainer">
-        <h3>Join A Chat</h3>
-        <input
-          type="text"
-          placeholder="John..."
-          onChange={(event) => {
-            setUsername(event.target.value);
-          }}
-        />
-        <input
-          type="text"
-          placeholder="Room ID..."
-          onChange={(event) => {
-            setRoom(event.target.value);
-          }}
-        />
-        <button onClick={joinRoom}>Join A Room</button>
+    // Function to handle clicks outside the chat container
+    const handleClickOutside = (event) => {
+      if (chatRef.current && !chatRef.current.contains(event.target)) {
+        closeCommentModal(); // Call close function if clicked outside
+      }
+    };
+
+    // Add event listener
+    document.addEventListener('mousedown', handleClickOutside);
+
+    // Clean up event listener on component unmount
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [closeCommentModal]);
+
+  return (
+    <div className="chat-container" ref={chatRef}>
+      <div className="chat-header">
+        <h2>Chat</h2>
+        <button onClick={closeCommentModal} className="close-button">Close</button> {/* Close button */}
       </div>
-    ) : (
-      <Chat socket={socket} username={username} room={room} email={email}/>
-    )}
-  </div>
-  </div>
-)
-}
+      <div className="chat">
+        {/* Chat component rendering */}
+        <Chat socket={socket} username={username} room={room} email={email}/>
+      </div>
+    </div>
+  );
+};
+
+export default SocketChat;

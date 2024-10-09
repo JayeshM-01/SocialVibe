@@ -7,6 +7,7 @@ import { Sidebar } from './components/Sidebar';
 import ImageGallery from './pages/ImageGallery';
 import FriendsPage from './pages/FriendsPage';
 import { SocketChat } from './pages/SocketChat';
+import FileUpload from './pages/FileUpload';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/reels" element={<ImageGallery />} />
           <Route path="/friends" element={<FriendsPage />} />
           <Route path="/chat" element={<SocketChat />} />
+          <Route path="/fileupload" element={<FileUpload />} />
         </Routes>
       </div>
     </Router>

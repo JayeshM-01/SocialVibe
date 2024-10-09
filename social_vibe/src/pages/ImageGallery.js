@@ -5,38 +5,56 @@ import { PostCard } from '../components/PostCard';
 
 const ImageGallery = () => {
   const { user, isLoading } = useAuth0(); // Get user info and loading state from Auth0
-  const [images, setImages] = useState([]); // State to store fetched images
+  const [mediaItems, setMediaItems] = useState([]); // State to store fetched media (images/videos)
   const [loading, setLoading] = useState(true); // State for loading indicator
   const [error, setError] = useState(null); // State for any errors
 
+  // Utility function to determine media type (image or video) based on URL extension
+  const determineMediaType = (url) => {
+    const imageExtensions = ['png', 'jpg', 'jpeg', 'gif']; // List of image extensions
+    const extension = url.split('.').pop().toLowerCase(); // Extract file extension from URL
+
+    return imageExtensions.includes(extension) ? 'image' : 'video'; // Return 'image' or 'video'
+  };
+
   useEffect(() => {
-    const fetchImages = async () => {
+    const fetchMediaItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/images/${user.email}`);
-        setImages(response.data); // Set the fetched images to state
+        const response = await axios.get(`http://localhost:3001/api/media/${user.email}`);
+
+        // Map through the media and determine the type based on the URL extension
+        const processedMedia = response.data.map((media) => ({
+          ...media, // Keep all existing media properties
+          type: determineMediaType(media.imageUrl), // Add the media type based on URL extension
+        }));
+
+        console.log(response.data);
+        
+
+        setMediaItems(processedMedia); // Set the processed media (with type) to state
       } catch (err) {
-        console.error('Error fetching images:', err);
-        setError('Error fetching images');
+        console.error('Error fetching media:', err);
+        setError('Error fetching media');
       } finally {
         setLoading(false); // Set loading to false after fetch completes
       }
     };
 
     if (user) {
-      fetchImages(); // Only fetch images if user is logged in
+      fetchMediaItems(); // Only fetch media if user is logged in
     }
-  }, [user]); // Fetch images when user changes
+  }, [user]); // Fetch media when user changes
 
   if (isLoading) {
     return <p>Loading user data...</p>; // Show loading message while fetching user data
   }
 
   if (!user) {
-    return <p>Please log in to see your uploaded images.</p>; // Prompt user to log in if not authenticated
+    return <p>Please log in to see your uploaded media.</p>; // Prompt user to log in if not authenticated
   }
 
   if (loading) {
-    return <p>Loading images...</p>; // Show loading message
+    return <p>Loading media...</p>; // Show loading message
   }
 
   if (error) {
@@ -44,11 +62,18 @@ const ImageGallery = () => {
   }
 
   return (
-    <div >
-      <div className='flex flex-col' style={{ display: 'flex', flexWrap: 'wrap' }}>
-        {images.map((image) => (
-          <div key={image._id} style={{ margin: '10px' }}>
-            <PostCard images={image.imageUrl} name={image.name} id={image._id} senderName={user.name} senderEmail={user.email} />
+    <div>
+      <div className="flex flex-col" style={{ display: 'flex', flexWrap: 'wrap' }}>
+        {mediaItems.map((media) => (
+          <div key={media._id} style={{ margin: '10px' }}>
+            <PostCard
+              mediaUrl={media.imageUrl}
+              mediaType={media.type} // Pass the determined media type (image or video)
+              name={media.name}
+              id={media._id}
+              senderName={user.name}
+              senderEmail={user.email}
+            />
           </div>
         ))}
       </div>

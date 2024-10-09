@@ -10,10 +10,10 @@ const mongoose = require('mongoose');
 const User = require('./Models/usermodel'); // Import the User model
 const Friends = require('./Models/Friends'); 
 const UserImage = require('./Models/File'); 
-const uploadRoutes = require('./routes/upload'); // Import the upload routes
 const friendsRoutes = require('./routes/friend'); // Import the friends routes
 const requestRoutes = require('./routes/request'); // Import the friends routes
 const messageRoutes = require('./routes/message'); // Import message routes
+const uploadRouter = require('./routes/uploadfile'); // Import message routes
 const multer = require('multer');
 const { Server } = require('socket.io');
 
@@ -31,10 +31,10 @@ const io = new Server(server, {
 app.use(cors()); // Enable CORS for cross-origin requests
 app.use(express.json()); // Parse incoming JSON requests
 
-app.use('/api', uploadRoutes); // Use upload routes under /api
 app.use('/friends', friendsRoutes); // Use friends routes under /friend
 app.use('/request', requestRoutes); // Use friends routes under /friend
 app.use('/messages', messageRoutes); // Add the message route
+app.use('/api', uploadRouter);
 
 
 // Connect to MongoDB using Mongoose
