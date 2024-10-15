@@ -80,7 +80,7 @@ const FriendsPage = () => {
     };
 
     return (
-        <div className="friends-page p-4">
+        <div className="friends-page p-4" style={{ textAlign: 'center', paddingTop: '5rem' }}>
             <h2 className="text-2xl font-bold mb-4">Friends Page</h2>
 
             <div className="friends-list mb-6">
@@ -90,7 +90,7 @@ const FriendsPage = () => {
                         <li>No friends added yet.</li>
                     ) : (
                         friends.map(friend => (
-                            <li key={friend} className="flex justify-between items-center py-2">
+                            <li key={friend} className="flex justify-center items-center py-2">
                                 {friend}
                             </li>
                         ))
@@ -102,11 +102,11 @@ const FriendsPage = () => {
                 <h3 className="text-xl font-semibold">All Users</h3>
                 <ul className="list-disc list-inside">
                     {users.map(user => (
-                        <li key={user.useremail} className="flex justify-between items-center py-2">
+                        <li key={user.useremail} className="flex justify-center items-center py-2">
                             {user.username} ({user.useremail})
                             <button
                                 onClick={() => sendFriendRequest(user.useremail)}
-                                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600"
+                                className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600 ml-10"
                             >
                                 Add Friend
                             </button>
@@ -119,7 +119,7 @@ const FriendsPage = () => {
                 <h3 className="text-xl font-semibold">Friend Requests</h3>
                 <ul className="list-disc list-inside">
                     {requests.map(request => (
-                        <li key={request._id} className="flex justify-between items-center py-2">
+                        <li key={request._id} className="flex justify-center items-center py-2">
                             {request.from} wants to be your friend.
                             <div>
                                 <button

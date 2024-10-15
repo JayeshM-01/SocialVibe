@@ -1,10 +1,15 @@
 import React from 'react';
-import './loader.css'; // Link to your CSS file
+import './loader.css';
 
 const Loader = () => {
   return (
-    <svg >
-    </svg>
+    <div className="loader-container">
+      <div className="container">
+        <div className="ring"></div>
+        <div className="ring"></div>
+        <div className="ring"></div>
+      </div>
+    </div>
   );
 };
 

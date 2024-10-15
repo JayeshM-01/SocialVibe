@@ -8,6 +8,9 @@ import ImageGallery from './pages/ImageGallery';
 import FriendsPage from './pages/FriendsPage';
 import { SocketChat } from './pages/SocketChat';
 import FileUpload from './pages/FileUpload';
+import Loader from './components/Loader';
+import SocialFeed from './pages/SocialFeed';
+import { Profile } from './pages/Profile';
 
 function App() {
   return (
@@ -21,6 +24,9 @@ function App() {
           <Route path="/friends" element={<FriendsPage />} />
           <Route path="/chat" element={<SocketChat />} />
           <Route path="/fileupload" element={<FileUpload />} />
+          <Route path="/load" element={<Loader />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/infinite" element={<SocialFeed />} />
         </Routes>
       </div>
     </Router>

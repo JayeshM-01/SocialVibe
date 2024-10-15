@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { PostCard } from '../components/PostCard';
+import Loader from '../components/Loader';
 
 const ImageGallery = () => {
   const { user, isLoading } = useAuth0(); // Get user info and loading state from Auth0
@@ -29,8 +30,6 @@ const ImageGallery = () => {
         }));
 
         console.log(response.data);
-        
-
         setMediaItems(processedMedia); // Set the processed media (with type) to state
       } catch (err) {
         console.error('Error fetching media:', err);
@@ -46,7 +45,7 @@ const ImageGallery = () => {
   }, [user]); // Fetch media when user changes
 
   if (isLoading) {
-    return <p>Loading user data...</p>; // Show loading message while fetching user data
+    return <Loader/>; // Show loading message while fetching user data
   }
 
   if (!user) {
@@ -54,7 +53,7 @@ const ImageGallery = () => {
   }
 
   if (loading) {
-    return <p>Loading media...</p>; // Show loading message
+    return <Loader/>; // Show loading message
   }
 
   if (error) {
@@ -62,10 +61,11 @@ const ImageGallery = () => {
   }
 
   return (
-    <div>
-      <div className="flex flex-col" style={{ display: 'flex', flexWrap: 'wrap' }}>
+    <div className="overflow-y-auto hide-scrollbar h-screen py-10">
+      {/* Scrollable gallery section */}
+      <div className="flex flex-col">
         {mediaItems.map((media) => (
-          <div key={media._id} style={{ margin: '10px' }}>
+          <div key={media._id} className="w-full h-full flex items-center justify-center">
             <PostCard
               mediaUrl={media.imageUrl}
               mediaType={media.type} // Pass the determined media type (image or video)
@@ -77,6 +77,17 @@ const ImageGallery = () => {
           </div>
         ))}
       </div>
+      
+      {/* Custom CSS for the scroll effect */}
+      <style jsx>{`
+        .hide-scrollbar::-webkit-scrollbar {
+          display: none; // Hide scrollbar for webkit browsers
+        }
+        .hide-scrollbar {
+          -ms-overflow-style: none; // IE and Edge
+          scrollbar-width: none; // Firefox
+        }
+      `}</style>
     </div>
   );
 };
