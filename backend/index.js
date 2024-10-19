@@ -18,11 +18,11 @@ const multer = require('multer');
 const { Server } = require('socket.io');
 
 const mongo_uri = process.env.MONGO_URI;
-
+const PORT = "3001"
 const server = http.createServer(app); // Create an HTTP server
 const io = new Server(server, {
     cors: {
-      origin: 'http://localhost:3000', // Client origin, replace with your actual client URL
+      origin: PORT, // Client origin, replace with your actual client URL
       methods: ['GET', 'POST']
     }
   });

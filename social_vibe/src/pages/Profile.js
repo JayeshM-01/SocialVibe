@@ -2,7 +2,7 @@ import { React, useState, useEffect } from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import Loader from '../components/Loader';
 import axios from 'axios';
-
+const PORT = "http://localhost:3001"
 export const Profile = () => {
   const { user, isLoading, isAuthenticated } = useAuth0();
   const [mediaItems, setMediaItems] = useState([]); // State to store fetched media (images/videos)
@@ -20,7 +20,7 @@ export const Profile = () => {
       if (user) {
         setImageLink(user?.picture || ''); // Set the image link only if user.picture is available
         try {
-          const response = await axios.get(`http://localhost:3001/api/media1/${user.email}`);
+          const response = await axios.get(`${PORT}/api/media1/${user.email}`);
           // Map through the media and determine the type based on the URL extension
           const processedMedia = response.data.map((media) => ({
             ...media, // Keep all existing media properties

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useAuth0 } from "@auth0/auth0-react";
-
+const PORT = "http://localhost:3001"
 export const UploadComponent = () => {
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -27,7 +27,7 @@ export const UploadComponent = () => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:3001/api/upload', formData, {
+      const response = await axios.post(`${PORT}/api/upload`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

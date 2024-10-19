@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth0 } from '@auth0/auth0-react';
 import { PostCard } from '../components/PostCard';
 import Loader from '../components/Loader';
-
+const PORT = "http://localhost:3001"
 const ImageGallery = () => {
   const { user, isLoading } = useAuth0(); // Get user info and loading state from Auth0
   const [mediaItems, setMediaItems] = useState([]); // State to store fetched media (images/videos)
@@ -21,7 +21,7 @@ const ImageGallery = () => {
   useEffect(() => {
     const fetchMediaItems = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/media/${user.email}`);
+        const response = await axios.get(`${PORT}/api/media/${user.email}`);
 
         // Map through the media and determine the type based on the URL extension
         const processedMedia = response.data.map((media) => ({

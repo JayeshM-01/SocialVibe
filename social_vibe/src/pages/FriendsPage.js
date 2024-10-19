@@ -15,7 +15,7 @@ const FriendsPage = () => {
     const [searchTermRequests, setSearchTermRequests] = useState("");
 
     const { user , isAuthenticated , isLoading } = useAuth0();
-    
+    const PORT = "http://localhost:3001"
     const navigate = useNavigate();
 
     // Fetch all users except the current user
@@ -23,11 +23,11 @@ const FriendsPage = () => {
         const fetchUsers = async () => {
             try {
                 // Fetch all users
-                const response = await axios.get(`http://localhost:3001/request/users?email=${user.email}`);
+                const response = await axios.get(`${PORT}/request/users?email=${user.email}`);
                 const allUsers = response.data; // Array of objects with email attribute
         
                 // Fetch friends list
-                const friendsResponse = await axios.get(`http://localhost:3001/friends?email=${user.email}`);
+                const friendsResponse = await axios.get(`${PORT}/friends?email=${user.email}`);
                 const friendsList = friendsResponse.data.friendsList;  // Array of strings (emails)
         
                 // Filter the users array to exclude emails in the friendsList
@@ -51,7 +51,7 @@ const FriendsPage = () => {
         
         const fetchRequests = async () => {
             try {
-                const response = await axios.get(`http://localhost:3001/request?email=${user.email}`);
+                const response = await axios.get(`${PORT}/request?email=${user.email}`);
                 setRequests(response.data);
             } catch (error) {
                 console.error('Error fetching requests:', error);
@@ -67,7 +67,7 @@ const FriendsPage = () => {
         try {
             
             console.log("HI");
-            await axios.post('http://localhost:3001/request', { from: user.email, to: toEmail });
+            await axios.post(`${PORT}/request`, { from: user.email, to: toEmail });
             alert('Friend request sent!');
         } catch (error) {
             console.error('Error sending friend request:', error);
@@ -77,7 +77,7 @@ const FriendsPage = () => {
     // Respond to a friend request
     const respondToRequest = async (requestId, action) => {
         try {
-            await axios.post('http://localhost:3001/request/respond', { requestId, action });
+            await axios.post(`${PORT}/request/respond`, { requestId, action });
             alert(`Friend request ${action}ed!`);
             // Update the requests list after accepting/rejecting
             setRequests(requests.filter(req => req._id !== requestId));
