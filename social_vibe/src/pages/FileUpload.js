@@ -12,7 +12,7 @@ const FileUpload = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
 
   const [fileSelected, setFileSelected] = useState(false);
-  
+  const PORT = "http://localhost:3001"
   const handleFileChange = (event) => {
     if (event.target.files.length > 0) {
       setFileSelected(true); // File is selected
@@ -37,7 +37,7 @@ const FileUpload = () => {
       setStatus(false);
       
       // Send file and user info to baSckend for Cloudinary upload
-      const response = await axios.post('http://localhost:3001/api', formData, {
+      const response = await axios.post(`${PORT}/api`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'username': user.name,  // Pass username from Auth0

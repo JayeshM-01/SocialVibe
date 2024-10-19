@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
-
+const PORT = "http://localhost:3001"
 function Chat({ socket, username, room , email }) {
     const [currentMessage, setCurrentMessage] = useState("");
     const [messageList, setMessageList] = useState([]);
@@ -13,7 +13,7 @@ function Chat({ socket, username, room , email }) {
     // Function to fetch comments for the image
     const fetchComments = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/messages/${room}`);
+        const response = await axios.get(`${PORT}/messages/${room}`);
         setMessageList(response.data);
         
       } catch (error) {

@@ -3,8 +3,8 @@ import io from "socket.io-client";
 import { useState } from "react";
 import './schat.css';
 import Chat from './Chat';
-
-const socket = io.connect("http://localhost:3001");
+const PORT = "http://localhost:3001"
+const socket = io.connect(PORT);
 
 export const SocketChat = ({ id, name, email, closeCommentModal }) => {
   const [username, setUsername] = useState(name);
