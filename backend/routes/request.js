@@ -9,7 +9,7 @@ router.get('/users', async (req, res) => {
     const useremail = req.query.email;
 
     try {
-        const users = await User.find({ useremail: { $ne: useremail } }, 'username useremail');
+        const users = await User.find({ useremail: { $ne: useremail } }, 'username useremail userimage');
         res.status(200).json(users);
     } catch (err) {
         console.error('Error fetching users:', err);

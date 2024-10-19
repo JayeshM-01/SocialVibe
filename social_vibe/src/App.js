@@ -1,4 +1,4 @@
-import React from 'react';
+import {React,useEffect} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
 import { Home } from './pages/Home';
@@ -11,8 +11,24 @@ import FileUpload from './pages/FileUpload';
 import Loader from './components/Loader';
 import SocialFeed from './pages/SocialFeed';
 import { Profile } from './pages/Profile';
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function App() {
+  const { user, isAuthenticated, isLoading, loginWithRedirect } = useAuth0();
+
+  useEffect(() => {
+    // Check if user is not authenticated and redirect to login
+    if (!isLoading && !isAuthenticated) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated, isLoading]); // Use isAuthenticated and isLoading as dependencies
+
+  if (isLoading) {
+    // Optionally show a loader while loading the authentication state
+    return <Loader />;
+  }
+
   return (
     <Router>
       <div className="App">

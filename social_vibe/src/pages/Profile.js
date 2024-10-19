@@ -18,7 +18,7 @@ export const Profile = () => {
   useEffect(() => {
     const fetchMediaItems = async () => {
       if (user) {
-        setImageLink(user.picture || ''); // Set the image link only if user.picture is available
+        setImageLink(user?.picture || ''); // Set the image link only if user.picture is available
         try {
           const response = await axios.get(`http://localhost:3001/api/media1/${user.email}`);
           // Map through the media and determine the type based on the URL extension
@@ -53,6 +53,7 @@ export const Profile = () => {
                   <img
                     className="w-20 h-20 md:w-40 md:h-40 object-cover rounded-full border-2 border-black-800"
                     src={imageLink}
+                    referrerPolicy="no-referrer"
                     alt={user.name} // Use the user's name for the alt attribute
                   />
                 ) : (

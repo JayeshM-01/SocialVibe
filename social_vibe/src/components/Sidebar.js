@@ -1,6 +1,5 @@
 import {React,useState,useEffect} from 'react'
 import { useAuth0 } from "@auth0/auth0-react";
-import artImage from '../images/Art.jpg';
 import axios from 'axios';
 
 
@@ -27,7 +26,8 @@ export const Sidebar = () => {
     // Create the user data object using Auth0 user info
     const userData = {
       username: user.name, // You can use either 'nickname' or 'name'
-      useremail: user.email // Access the user email
+      useremail: user.email, // Access the user email
+      userimage: user.picture
     };
 
     
@@ -50,36 +50,21 @@ export const Sidebar = () => {
 
   return (
     <div>
-<div className="absolute top-0 left-0 p-5 z-50">
-  <button
-    type="button"
-    onClick={toggleDrawer}
-    aria-controls="drawer-navigation"
-  >
-    <img 
-      src={artImage} 
-      alt="Art" 
-      className="h-[10vh] w-[10vh]"
-    />
-  </button>
-</div>
-
-
       {/* Sidebar Drawer */}
       <div
         id="drawer-navigation"
-        className={`fixed top-0 left-0 h-screen p-4 overflow-y-auto transition-transform z-[60] ${
+        className={`fixed top-0 left-0 h-screen p-4 overflow-y-auto transition-transform z-60 ${
           isOpen ? "translate-x-0" : "-translate-x-full"
         } bg-white w-64 dark:bg-gray-800`}
         aria-labelledby="drawer-navigation-label"
       >
-<h5
-  id="drawer-navigation-label"
-  className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 uppercase dark:text-gray-400 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
-  style={{ fontFamily: 'Lobster, cursive', letterSpacing: '1.5px', textShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}
->
-  SocialVibe
-</h5>
+      <h5
+        id="drawer-navigation-label"
+        className="text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 uppercase dark:text-gray-400 transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-lg"
+        style={{ fontFamily: 'Lobster, cursive', letterSpacing: '1.5px', textShadow: '1px 1px 2px rgba(0,0,0,0.2)' }}
+      >
+        SocialVibe
+      </h5>
         {/* <button
           type="button"
           onClick={toggleDrawer}

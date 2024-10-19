@@ -132,7 +132,7 @@ io.on("connection", (socket) => {
 
 // User creation route
 app.post('/user', async (req, res) => {
-    const { username, useremail } = req.body;
+    const { username, useremail,userimage } = req.body;
 
     if (!username || !useremail) {
         return res.status(400).json({ message: 'Username and email are required.' });
@@ -148,7 +148,7 @@ app.post('/user', async (req, res) => {
             return res.status(400).json({ message: 'Username or email already exists' });
         }
 
-        const newUser = new User({ username, useremail });
+        const newUser = new User({ username, useremail,userimage });
         const newfriend = new Friends({ useremail });
         console.log(newUser);
         

@@ -10,6 +10,10 @@ const UserSchema = new mongoose.Schema({
         required: [true, 'Email is required'],
         unique: true,
         match: [/.+\@.+\..+/, 'Please enter a valid email address']
+    },
+    userimage: {
+        type: String,
+        required: [true, 'Email is required']
     }
 }, {
     timestamps: true
